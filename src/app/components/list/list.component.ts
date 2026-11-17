@@ -4,6 +4,7 @@ import { effect } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { map } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ApiService } from '../../services/api.service';
 import { Entry } from '../../services/api.types';
@@ -98,6 +99,7 @@ export class ListComponent implements OnInit {
             }))
             .sort((a, b) => Date.parse(a.date) - Date.parse(b.date)),
         ),
+        takeUntilDestroyed(),
       )
       .subscribe((sorted) => {
         this.queue.set(sorted);

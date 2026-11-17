@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, DestroyRef } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { effect } from '@angular/core';
 
@@ -17,7 +17,7 @@ import { Entry } from '../../services/api.types';
   styleUrl: './list.component.css',
 })
 export class ListComponent implements OnInit {
-  constructor() {
+  constructor(private destroyRef: DestroyRef) {
     effect(() => {
       const entry = this.current();
       if (entry) {
@@ -99,7 +99,7 @@ export class ListComponent implements OnInit {
             }))
             .sort((a, b) => Date.parse(a.date) - Date.parse(b.date)),
         ),
-        takeUntilDestroyed(),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((sorted) => {
         this.queue.set(sorted);

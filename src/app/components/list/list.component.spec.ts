@@ -43,12 +43,6 @@ class MockTranslateService {
   translate(key: string | any, interpolateParams?: any) { return key; }
   instant(key: string | any, interpolateParams?: any) { return key; }
   cachedSignal(key: string | any) { return () => key; }
-
-  use(_lang: string) {}
-  // ngx-translate pipe calls this method internally
-  translate(key: string | any, interpolateParams?: any) {
-    return key;
-  }
 }
 
 describe('ListComponent', () => {
@@ -93,6 +87,7 @@ describe('ListComponent', () => {
     expect(result).toBe('test-key');
   });
 
+  it('should approve entry', () => {
     const compAny = component as any;
     expect(compAny.queue().length).toBe(1);
     (component as any).approve();

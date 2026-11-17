@@ -1,0 +1,157 @@
+@if (hasLoaded()) {
+  <div id="wrapper_template" class="row">
+    <!-- LEFT SIDE: CURRENT ENTRY -->
+    <div class="card fade-in halfCard col-6" [class.active]="current()" [ngClass]="lengthClass">
+      @if (current()) {
+        <form #myform="ngForm" class="form form-register">
+          <!-- LANGUAGE -->
+          <div class="line-top padding-1rem">
+            <div class="glass-input-group lang-wrapper">
+              <span class="glass-input-icon lang-icon">🌐</span>
+
+              <div class="lang-options">
+                <input
+                  id="english"
+                  type="radio"
+                  name="language"
+                  value="english"
+                  [checked]="current()?.language === 'english'"
+                  (change)="updateLanguage('english')"
+                />
+                <label class="btn-lang" for="english">{{ 'primaryLanguage' | translate }}</label>
+
+                <input
+                  id="german"
+                  type="radio"
+                  name="language"
+                  value="german"
+                  [checked]="current()?.language === 'german'"
+                  (change)="updateLanguage('german')"
+                />
+                <label class="btn-lang" for="german">{{ 'secondLanguage' | translate }}</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAGS -->
+          <div class="line-top padding-1rem">
+            <div class="glass-input-group">
+              <span class="glass-input-icon">#</span>
+              <input
+                class="glass-input"
+                autocomplete="off"
+                name="tags"
+                [ngModel]="current()?.tags"
+                (ngModelChange)="updateTags($event)"
+              />
+            </div>
+          </div>
+
+          <!-- PHRASE -->
+          <div class="line-top padding-1rem">
+            <div class="glass-input-group">
+              <span class="glass-input-icon">✎</span>
+              <textarea
+                class="glass-input"
+                spellcheck="false"
+                style="height: 16em"
+                name="phrase"
+                [ngModel]="current()?.phrase"
+                (ngModelChange)="updatePhrase($event)"
+                required
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- EMAIL COMMENT -->
+          @if (hasEmail) {
+            <div class="line-top padding-1rem">
+              <div class="glass-input-group">
+                <span class="glass-input-icon">@</span>
+                <textarea
+                  class="glass-input"
+                  rows="1"
+                  name="comment"
+                  placeholder="{{ 'ADMIN_EMAIL_DETECTED' | translate }}"
+                  [ngModel]="current()?.comment"
+                  (ngModelChange)="updateComment($event)"
+                ></textarea>
+              </div>
+            </div>
+          }
+          <!-- DATE + COUNT -->
+          <div class="col-xs-12 align-center line-top line-bottom">
+            {{ 'ADMIN_DATE' | translate }}: {{ current()?.date }}
+            |
+            {{ 'ADMIN_ENTRIES_LEFT' | translate }}: {{ queue().length }}
+            |
+            {{ current()?.id }}
+            |
+            <span><b>{{ current()?.phrase?.length }}</b></span>
+          </div>
+        </form>
+      } @else {
+        <div class="padding-1rem align-center">
+          <h4>{{ 'LIST_null' | translate }}</h4>
+        </div>
+      }
+    </div>
+
+    <!-- RIGHT SIDE: RULES + ACTIONS -->
+    <div class="card fade-in halfCard margin-left col-6 rules-card" aria-labelledby="rules-heading">
+      <div class="line-top line-bottom padding-1rem align-center rules-header">
+        <h4 id="rules-heading">
+          <b>{{ 'rules3' | translate }}</b>
+        </h4>
+      </div>
+
+      <section class="rules-list padding-1rem">
+        <ol class="rules-ol">
+          <li>
+            <span class="rule-title">{{ 'rules4' | translate }}</span>
+          </li>
+          <li>
+            <span class="rule-title">{{ 'rules5' | translate }}</span>
+          </li>
+          <li>
+            <span class="rule-title">{{ 'rules10' | translate }}</span>
+            <ul class="rule-sublist">
+              <li>
+                <strong>{{ 'rules6' | translate }}</strong>
+              </li>
+              <li>{{ 'rules9' | translate }}</li>
+              <li>
+                <strong>{{ 'rules7' | translate }}</strong>
+              </li>
+              <li>{{ 'rules11' | translate }}</li>
+              <li>{{ 'rules12' | translate }}</li>
+            </ul>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ACTIONS moved here -->
+      <div class="rules-actions padding-1rem line-top line-bottom">
+        <div class="actions">
+          <button
+            class="btn btn-success"
+            type="button"
+            (click)="approve()"
+            aria-label="Approve entry"
+          >
+            {{ 'ADMIN_APPROVE' | translate }}
+          </button>
+
+          <button
+            class="btn btn-discard"
+            type="button"
+            (click)="discard()"
+            aria-label="Reject entry"
+          >
+            {{ 'ADMIN_REJECT' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

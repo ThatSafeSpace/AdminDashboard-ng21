@@ -39,6 +39,12 @@ class MockApiService {
 
 class MockTranslateService {
   use(_lang: string) {}
+  // Methods required by TranslatePipe in Angular 21
+  translate(key: string | any, interpolateParams?: any) { return key; }
+  instant(key: string | any, interpolateParams?: any) { return key; }
+  cachedSignal(key: string | any) { return () => key; }
+
+  use(_lang: string) {}
   // ngx-translate pipe calls this method internally
   translate(key: string | any, interpolateParams?: any) {
     return key;
@@ -81,7 +87,12 @@ describe('ListComponent', () => {
     expect(compAny.hasLoaded()).toBe(true);
   });
 
-  it('should approve the current entry and move to next', () => {
+  it('stub translate pipe returns input', () => {
+    const pipe = new StubTranslatePipe();
+    const result = pipe.transform('test-key');
+    expect(result).toBe('test-key');
+  });
+
     const compAny = component as any;
     expect(compAny.queue().length).toBe(1);
     (component as any).approve();
